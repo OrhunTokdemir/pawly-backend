@@ -2,7 +2,9 @@ package org.pawly.pawlybackend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -14,7 +16,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String username;
 
     @Column(unique = true, nullable = false)
@@ -22,4 +24,12 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    private String bio;
+
+    private String profilePictureUrl;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Instant createdAt;
 }
