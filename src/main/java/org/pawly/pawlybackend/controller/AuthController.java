@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.pawly.pawlybackend.dto.LoginRequest;
 import org.pawly.pawlybackend.dto.SignupRequest;
+import org.pawly.pawlybackend.dto.UpdateProfileRequest;
 import org.pawly.pawlybackend.service.AuthService;
 import org.pawly.pawlybackend.service.UserDetailsImpl;
 import org.springframework.http.HttpHeaders;
@@ -29,8 +30,8 @@ public class AuthController {
     }
 
     @PatchMapping("/update")
-    ResponseEntity<?> updateUser(@Valid @RequestBody SignupRequest signupRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        HttpHeaders headers = authService.updateUser(signupRequest, userDetails);
+    ResponseEntity<?> updateUser(@Valid @RequestBody UpdateProfileRequest updateRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        HttpHeaders headers = authService.updateUser(updateRequest, userDetails);
         return ResponseEntity.ok()
                 .headers(headers)
                 .body("User updated successfully!");

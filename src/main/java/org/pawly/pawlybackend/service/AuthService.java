@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.pawly.pawlybackend.dto.LoginRequest;
 import org.pawly.pawlybackend.dto.SignupRequest;
+import org.pawly.pawlybackend.dto.UpdateProfileRequest;
 import org.pawly.pawlybackend.entity.RefreshToken;
 import org.pawly.pawlybackend.entity.User;
 import org.pawly.pawlybackend.exception.ResourceNotFoundException;
@@ -40,6 +41,7 @@ public class AuthService {
             throw new IllegalArgumentException("Email is already in use!");
         }
 
+
         User user = new User();
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
@@ -49,19 +51,31 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public HttpHeaders updateUser(SignupRequest signupRequest, UserDetailsImpl userDetails) {
+    public HttpHeaders updateUser(UpdateProfileRequest updateRequest, UserDetailsImpl userDetails) {
         User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
-        if (signupRequest.getUsername() != null && !signupRequest.getUsername().isEmpty())
-            user.setUsername(signupRequest.getUsername());
-        if (signupRequest.getEmail() != null && !signupRequest.getEmail().isEmpty())
-            user.setEmail(signupRequest.getEmail());
-        if (signupRequest.getPassword() != null && !signupRequest.getPassword().isEmpty())
-            user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        if (updateRequest.getUsername() != null && !updateRequest.getUsername().isEmpty() && !updateRequest.getUsername().equals(user.getUsername())) {
+            user.setUsername(updateRequest.getUsername());
+        }
+        if (updateRequest.getEmail() != null && !updateRequest.getEmail().isEmpty() && !updateRequest.getEmail().equals(user.getEmail())) {
+            if (userRepository.existsByEmail(updateRequest.getEmail())) {
+                throw new IllegalArgumentException("Email is already in use!");
+            }
+            user.setEmail(updateRequest.getEmail());
+        }
+        if (updateRequest.getPassword() != null && !updateRequest.getPassword().isEmpty())
+            user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+        
+        if (updateRequest.getBio() != null)
+            user.setBio(updateRequest.getBio());
+            
+        if (updateRequest.getProfilePictureUrl() != null)
+            user.setProfilePictureUrl(updateRequest.getProfilePictureUrl());
+
         userRepository.save(user);
 
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails.getEmail());
+        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(user.getEmail());
         refreshTokenService.deleteByUserId(userDetails.getId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
         ResponseCookie jwtRefreshCookie = jwtUtils.generateRefreshJwtCookie(refreshToken.getToken());
@@ -137,7 +151,12 @@ public class AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
         Map<String, Object> res = new HashMap<>();
+        res.put("id", user.getId());
         res.put("username", user.getUsername());
+        res.put("email", user.getEmail());
+        res.put("bio", user.getBio());
+        res.put("profilePictureUrl", user.getProfilePictureUrl());
+        res.put("createdAt", user.getCreatedAt());
         res.put("roles", userDetails.getAuthorities()
                 .stream().map(GrantedAuthority::getAuthority).toList());
         return res;
