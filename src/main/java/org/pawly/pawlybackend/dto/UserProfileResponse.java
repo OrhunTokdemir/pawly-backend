@@ -2,6 +2,7 @@ package org.pawly.pawlybackend.dto;
 
 import lombok.Data;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -14,4 +15,5 @@ public class UserProfileResponse {
     private int followerCount;
     private int followingCount;
     private boolean isFollowing;
+    private List<PostResponse> posts;
 }

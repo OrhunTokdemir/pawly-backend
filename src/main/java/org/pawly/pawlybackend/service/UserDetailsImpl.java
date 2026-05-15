@@ -20,7 +20,6 @@ public class UserDetailsImpl implements UserDetails {
     private final String username;
     private final String email;
 
-    // Prevents the password from being serialized if you ever return this object in a JSON response
     @JsonIgnore
     private final String password;
 

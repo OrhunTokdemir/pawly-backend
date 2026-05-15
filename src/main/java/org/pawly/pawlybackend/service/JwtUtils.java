@@ -38,7 +38,7 @@ public class JwtUtils {
                 .maxAge(jwtExpirationMs / 1000) // seconds
                 //.httpOnly(true)
                 //.secure(true) // Set to true in production (HTTPS)
-                //.sameSite("Strict")
+                .sameSite("Lax")
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class JwtUtils {
                 .maxAge(7 * 24 * 60 * 60) // 7 days
                 //.httpOnly(true)
                 //.secure(true)
-                //.sameSite("Strict")
+                .sameSite("Lax")
                 .build();
     }
 

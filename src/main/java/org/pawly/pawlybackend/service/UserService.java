@@ -7,6 +7,7 @@ import org.pawly.pawlybackend.entity.User;
 import org.pawly.pawlybackend.exception.ResourceNotFoundException;
 import org.pawly.pawlybackend.repository.FollowRepository;
 import org.pawly.pawlybackend.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,9 +19,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final PostService postService;
 
     public UserProfileResponse getUserProfile(String username, UUID currentUserId) {
-        User targetUser = userRepository.findByEmail(username)
+        User targetUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         UserProfileResponse response = new UserProfileResponse();
@@ -37,6 +39,8 @@ public class UserService {
         } else {
             response.setFollowing(false);
         }
+
+        response.setPosts(postService.getPostsByUser(targetUser.getId(), PageRequest.of(0, 20)).getContent());
 
         return response;
     }

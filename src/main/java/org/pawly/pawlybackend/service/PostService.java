@@ -50,6 +50,11 @@ public class PostService {
                 .map(this::mapToResponse);
     }
 
+    public Page<PostResponse> getPostsByUser(UUID userId, Pageable pageable) {
+        return postRepository.findByUserIdAndParentPostIsNullOrderByCreatedAtDesc(userId, pageable)
+                .map(this::mapToResponse);
+    }
+
     public PostResponse getPostById(UUID postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
