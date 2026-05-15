@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import jakarta.servlet.DispatcherType;
+import org.springframework.http.HttpMethod;
 
 import java.util.List;
 
@@ -58,6 +59,12 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/auth/update").authenticated()
                                 .requestMatchers("/api/auth/me").authenticated()
                                 .requestMatchers("/api/auth/**").permitAll()
+                                // posts
+                                .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
+                                .requestMatchers("/api/posts/**").authenticated()
+                                // users
+                                .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+                                .requestMatchers("/api/users/**").authenticated()
                                 .anyRequest().authenticated()
                 );
 
