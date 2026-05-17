@@ -37,7 +37,7 @@ public class JwtUtils {
                 .path("/")
                 .maxAge(jwtExpirationMs / 1000) // seconds
                 .httpOnly(false)
-                .secure(true) // Required for SameSite=None
+                .secure(false) // Required for SameSite=None
                 .sameSite("None")
                 .build();
     }
@@ -47,7 +47,7 @@ public class JwtUtils {
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60) // 7 days
                 .httpOnly(false)
-                .secure(true)
+                .secure(false)
                 .sameSite("None")
                 .build();
     }
@@ -57,7 +57,7 @@ public class JwtUtils {
                 .path("/")
                 .maxAge(0)
                 .httpOnly(false)
-                .secure(true)
+                .secure(false)
                 .sameSite("None")
                 .build();
     }
@@ -67,7 +67,7 @@ public class JwtUtils {
                 .path("/")
                 .maxAge(0)
                 .httpOnly(false)
-                .secure(true)
+                .secure(false)
                 .sameSite("None")
                 .build();
     }
