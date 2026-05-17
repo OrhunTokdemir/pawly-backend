@@ -15,8 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -125,7 +128,19 @@ public class PostService {
         );
         response.setAuthor(authorDto);
         response.setLikeCount(postLikeRepository.countByPostId(post.getId()));
-        
+
+        // Map users who liked the post
+        List<UserSummaryDto> likedBy = post.getLikes() != null
+                ? post.getLikes().stream()
+                    .map(like -> new UserSummaryDto(
+                            like.getUser().getId(),
+                            like.getUser().getUsername(),
+                            like.getUser().getProfilePictureUrl()
+                    ))
+                    .collect(Collectors.toList())
+                : Collections.emptyList();
+        response.setLikedBy(likedBy);
+
         // Count replies
         int replyCount = post.getReplies() != null ? post.getReplies().size() : 0;
         response.setReplyCount(replyCount);
