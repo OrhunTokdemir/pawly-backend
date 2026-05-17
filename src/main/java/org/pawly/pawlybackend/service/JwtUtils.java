@@ -36,9 +36,9 @@ public class JwtUtils {
         return ResponseCookie.from(jwtCookie, jwt)
                 .path("/")
                 .maxAge(jwtExpirationMs / 1000) // seconds
-                //.httpOnly(true)
-                //.secure(true) // Set to true in production (HTTPS)
-                .sameSite("Lax")
+                .httpOnly(true)
+                .secure(true) // Required for SameSite=None
+                .sameSite("None")
                 .build();
     }
 
@@ -46,18 +46,30 @@ public class JwtUtils {
         return ResponseCookie.from(jwtRefreshCookie, refreshToken)
                 .path("/api/auth/refresh")
                 .maxAge(7 * 24 * 60 * 60) // 7 days
-                //.httpOnly(true)
-                //.secure(true)
-                .sameSite("Lax")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
                 .build();
     }
 
     public ResponseCookie getCleanJwtCookie() {
-        return ResponseCookie.from(jwtCookie, "").path("/").maxAge(0).build();
+        return ResponseCookie.from(jwtCookie, "")
+                .path("/")
+                .maxAge(0)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .build();
     }
 
     public ResponseCookie getCleanJwtRefreshCookie() {
-        return ResponseCookie.from(jwtRefreshCookie, "").path("/api/auth/refresh").maxAge(0).build();
+        return ResponseCookie.from(jwtRefreshCookie, "")
+                .path("/api/auth/refresh")
+                .maxAge(0)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .build();
     }
 
     public String getJwtFromCookies(HttpServletRequest request) {
