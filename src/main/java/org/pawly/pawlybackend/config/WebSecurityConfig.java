@@ -74,29 +74,29 @@ public class WebSecurityConfig {
     }
 
     @Bean
-public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedOrigins(List.of(
-        "http://localhost:3000",
-        "https://pawlysocial.vercel.app"
-    ));
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:3000",
+            "https://pawlysocial.vercel.app"
+        ));
 
-    configuration.setAllowedMethods(List.of(
-        "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
-    ));
+        configuration.setAllowedMethods(List.of(
+            "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
+        ));
 
-    configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
 
-    configuration.setExposedHeaders(List.of("Set-Cookie"));
+        configuration.setExposedHeaders(List.of("Set-Cookie"));
 
-    configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true);
 
-    UrlBasedCorsConfigurationSource source =
-            new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
 
-    source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration);
 
-    return source;
-}
+        return source;
+    }
 }
