@@ -11,4 +11,5 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
     Page<Post> findByParentPostIsNullOrderByCreatedAtDesc(Pageable pageable);
     Page<Post> findByParentPostIdOrderByCreatedAtAsc(UUID parentId, Pageable pageable);
     Page<Post> findByUserIdAndParentPostIsNullOrderByCreatedAtDesc(UUID userId, Pageable pageable);
+    Page<Post> findByContentContainingIgnoreCaseAndDeletedFalseOrderByCreatedAtDesc(String content, Pageable pageable);
 }

@@ -69,4 +69,9 @@ public class UserService {
         Optional<Follow> existingFollow = followRepository.findByFollowerIdAndFollowingId(currentUserId, targetUserId);
         existingFollow.ifPresent(followRepository::delete);
     }
+
+    public org.springframework.data.domain.Page<org.pawly.pawlybackend.dto.UserSummaryDto> searchUsers(String query, org.springframework.data.domain.Pageable pageable) {
+        return userRepository.findByUsernameContainingIgnoreCase(query, pageable)
+                .map(user -> new org.pawly.pawlybackend.dto.UserSummaryDto(user.getId(), user.getUsername(), user.getProfilePictureUrl()));
+    }
 }

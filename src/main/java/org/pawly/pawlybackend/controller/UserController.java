@@ -43,4 +43,10 @@ public class UserController {
         userService.unfollowUser(id, userDetails.getId());
         return ResponseEntity.ok("Successfully unfollowed user");
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<org.springframework.data.domain.Page<org.pawly.pawlybackend.dto.UserSummaryDto>> searchUsers(
+            @RequestParam String q, org.springframework.data.domain.Pageable pageable) {
+        return ResponseEntity.ok(userService.searchUsers(q, pageable));
+    }
 }

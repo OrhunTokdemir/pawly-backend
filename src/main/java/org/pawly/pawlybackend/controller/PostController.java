@@ -72,4 +72,10 @@ public class PostController {
         postService.deletePost(id, userDetails.getId());
         return ResponseEntity.ok("Post deleted successfully");
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<PostResponse>> searchPosts(
+            @RequestParam String q, Pageable pageable) {
+        return ResponseEntity.ok(postService.searchPosts(q, pageable));
+    }
 }

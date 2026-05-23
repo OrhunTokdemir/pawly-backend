@@ -103,6 +103,11 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public Page<PostResponse> searchPosts(String query, Pageable pageable) {
+        return postRepository.findByContentContainingIgnoreCaseAndDeletedFalseOrderByCreatedAtDesc(query, pageable)
+                .map(this::mapToResponse);
+    }
+
     private PostResponse mapToResponse(Post post) {
         PostResponse response = new PostResponse();
         response.setId(post.getId());
