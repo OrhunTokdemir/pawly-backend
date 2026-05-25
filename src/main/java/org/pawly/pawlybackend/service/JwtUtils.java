@@ -36,7 +36,7 @@ public class JwtUtils {
         return ResponseCookie.from(jwtCookie, jwt)
                 .path("/")
                 .maxAge(jwtExpirationMs / 1000) // seconds
-                .httpOnly(false)
+                .httpOnly(true)
                 .secure(true) // Required for SameSite=None
                 .sameSite("None")
                 .build();
@@ -46,7 +46,7 @@ public class JwtUtils {
         return ResponseCookie.from(jwtRefreshCookie, refreshToken)
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60) // 7 days
-                .httpOnly(false)
+                .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
                 .build();
@@ -56,7 +56,7 @@ public class JwtUtils {
         return ResponseCookie.from(jwtCookie, "")
                 .path("/")
                 .maxAge(0)
-                .httpOnly(false)
+                .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
                 .build();
@@ -66,7 +66,7 @@ public class JwtUtils {
         return ResponseCookie.from(jwtRefreshCookie, "")
                 .path("/")
                 .maxAge(0)
-                .httpOnly(false)
+                .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
                 .build();
