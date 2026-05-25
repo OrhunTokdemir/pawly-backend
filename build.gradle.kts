@@ -36,6 +36,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("me.paulschwarz:spring-dotenv:4.0.0")
 }
 
 tasks.withType<Test> {
