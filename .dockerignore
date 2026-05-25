@@ -7,5 +7,5 @@ build
 out
 bin
 *.md
-docker-compose.yml
+compose.yml
 requests.http
